@@ -1,0 +1,9 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.Webtechapp" parent="Theme.AppCompat.Light">
+
+    </style>
+    <style name="ss" parent="Theme.AppCompat.Light">
+        <item name="android:windowBackground">@drawable/background_ss</item>
+    </style>
+</resources>

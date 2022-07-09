@@ -1,0 +1,88 @@
+<html>
+
+<head>
+
+</head>
+
+<body>
+<div id="container"></div>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+
+<script>
+    function myFunc(recommendationData){
+        var colors = ['#2d473a', '#1d8c54', '#bc8c1d', '#f4585a', '#803131'];
+        recommendationData = JSON.parse(recommendationData);
+<!--        var recommendationData = {"strongBuy":[18,18,17,17],"buy":[26,26,26,25],"hold":[8,8,8,7],"sell":[0,0,0,0],"strongSell":[0,0,0,0],"symbol":"AAPL","xcateg":["2022-04","2022-03","2022-02","2022-01"]};-->
+      Highcharts.chart("container",
+      {
+      chart: {
+        type: 'column',
+        // zoomType:'x',
+      },
+      colors: colors,
+      title: {
+        text: `Recommendation Trends`,
+      },
+      xAxis: {
+
+        categories: recommendationData.xcateg,
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: 'Analysis',
+        },
+        stackLabels: {
+          enabled: false,
+        },
+      },
+      legend: {
+        align: 'center',
+        verticalAlign: 'bottom',
+        backgroundColor:'white',
+        shadow: false,
+      },
+      tooltip: {
+        headerFormat: '<b>{point.x}</b><br/>',
+        pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}',
+      },
+      plotOptions: {
+        column: {
+          stacking: 'normal',
+          dataLabels: {
+            enabled: true,
+          },
+        },
+      },
+      series: [
+        {
+          name: 'Strong Buy',
+          data: recommendationData.strongBuy,
+        },
+        {
+          name: 'Buy',
+          data: recommendationData.buy,
+        },
+        {
+          name: 'Hold',
+          data: recommendationData.hold,
+        },
+        {
+          name: 'Sell',
+          data: recommendationData.sell,
+        },
+        {
+          name: 'Strong Sell',
+          data: recommendationData.strongSell,
+        },
+      ],
+    })};
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,164 @@
+<html>
+
+<head>
+
+</head>
+
+<body>
+<div id="container"></div>
+<script src="https://code.highcharts.com/stock/highstock.js"></script>
+<script src="https://code.highcharts.com/stock/modules/data.js"></script>
+<script src="https://code.highcharts.com/stock/modules/drag-panes.js"></script>
+<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/stock/indicators/indicators.js"></script>
+<script src="https://code.highcharts.com/highcharts-more.js"></script>
+<script src="https://code.highcharts.com/stock/indicators/volume-by-price.js"></script>
+
+<script>
+    function myFunc(chart){
+    var ohlc = [];
+    var volume = [];
+    chart = JSON.parse(chart);
+
+    fetch(chart.url).then(response=>{
+		return response.json()
+
+    }).then(response=>{
+		var len = response.c?.length;
+
+    if (len > 0) {
+      var i = 0;
+      while (i < len) {
+        const UTC_date = response.t[i] * 1000;
+        var o =response.o[i];
+        var h = response.h[i];
+        var l = response.l[i];
+        var c = response.c[i];
+        var v = response.v[i];
+        ohlc.push([
+          UTC_date, // the date
+          o, // open
+          h, // high
+          l, // low
+          c, // close
+        ]);
+
+        volume.push([
+          UTC_date, // the date
+          v, // the volume
+        ]);
+        i++;
+      }
+      Highcharts.stockChart("container",
+        {
+        rangeSelector: {
+          selected: 2,
+        },
+
+        title: {
+          text:  chart.stock+' Historical',
+        },
+
+        subtitle: {
+          text: 'With SMA and Volume by Price technical indicators',
+        },
+
+        yAxis: [
+          {
+            startOnTick: false,
+            endOnTick: false,
+            labels: {
+              align: 'right',
+              x: -3,
+            },
+            title: {
+              text: 'OHLC',
+            },
+            height: '60%',
+            lineWidth: 2,
+            resize: {
+              enabled: true,
+            },
+          },
+          {
+            labels: {
+              align: 'right',
+              x: -3,
+            },
+            title: {
+              text: 'Volume',
+            },
+            top: '65%',
+            height: '35%',
+            offset: 0,
+            lineWidth: 2,
+          },
+        ],
+
+        tooltip: {
+          split: true,
+        },
+
+        plotOptions: {
+          series: {
+            dataGrouping: {
+              units: [
+                ['day', [1]],
+                ['week', [1]],
+                //													['month', [1, 2, 3, 4, 6]]
+              ],
+            },
+          },
+        },
+
+        series: [
+          {
+            type: 'candlestick',
+            name: chart.stock,
+            id: chart.stock.toLowerCase(),
+            zIndex: 2,
+            data: ohlc,
+          },
+          {
+            type: 'column',
+            name: 'Volume',
+            id: 'volume',
+            data: volume,
+            yAxis: 1,
+          },
+          {
+            type: 'vbp',
+            linkedTo: chart.stock.toLowerCase(),
+            params: {
+              volumeSeriesID: 'volume',
+            },
+            dataLabels: {
+              enabled: false,
+            },
+            zoneLines: {
+              enabled: false,
+            },
+          },
+          {
+            type: 'sma',
+            linkedTo: chart.stock.toLowerCase(),
+            zIndex: 1,
+            marker: {
+              enabled: false,
+            },
+          },
+        ],
+      }
+        );
+
+    }
+	}).catch((e)=>{
+		console.log(e);
+	});
+}
+
+
+    </script>
+</body>
+
+</html>

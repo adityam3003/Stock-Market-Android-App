@@ -1,0 +1,117 @@
+<html>
+
+<head>
+
+</head>
+
+<body>
+<div id="container"></div>
+<script src="https://code.highcharts.com/stock/highstock.js"></script>
+<script src="https://code.highcharts.com/stock/modules/data.js"></script>
+<script src="https://code.highcharts.com/stock/modules/drag-panes.js"></script>
+<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+<script>
+    function myFunction(chart){
+    var lDay = [];
+    chart = JSON.parse(chart);
+
+
+    var chartColor = 'black';
+    if (chart.change < 0) {
+      chartColor = 'red';
+    } else if (chart.change > 0) {
+      chartColor = 'green';
+    }
+    console.log(chart.url);
+	fetch(chart.url).then((response)=>{
+		return response.json();
+	}).then((response)=>{
+		var i = 0;
+    var len = response.c?.length;
+    if (len != 0) {
+      // if there is chart data in current search
+      while (i < len) {
+        const UTC_date = response.t[i] * 1000;
+        var temp_close = parseFloat(response.c[i].toFixed(3));
+        lDay[i] = [UTC_date, temp_close];
+        i++;
+      }
+      Highcharts.stockChart("container",
+
+        {
+          chart: {
+          zoomType : false,
+          height: 400,
+        },
+        responsive: {
+          rules: [
+            {
+              condition: {
+                maxWidth: 420,
+              },
+            },
+          ],
+        },
+        title: {
+          text:  chart.stock+' Hourly Price Variation',
+          style: {
+            color: 'grey',
+          },
+        },
+        rangeSelector: {
+          enabled: false,
+        },
+        time: {
+          useUTC: false,
+        },
+        series: [
+          {
+            name: chart.stock,
+            data: lDay,
+            type: 'line',
+            color: chartColor,
+          },
+        ],
+        xAxis: {
+          type: 'datetime',
+          zoomEnabled: true,
+          units: [
+            ['minute', [30]],
+            ['hour', [1]],
+          ],
+        },
+        yAxis: [
+          {
+            opposite: true,
+            height: '100%',
+            offset: 0,
+          },
+        ],
+        plotOptions: {
+          series: {
+            pointPlacement: 'on',
+          },
+        },
+        navigator: {
+          enabled: false,
+          series: {
+            type: 'area',
+            fillColor: chartColor,
+          },
+        },
+        scrollbar: {
+          enabled: true,
+        },
+        });
+
+    }
+	}).catch((e)=>{
+		console.log(e);
+	})
+
+    }
+
+    </script>
+</body>
+
+</html>

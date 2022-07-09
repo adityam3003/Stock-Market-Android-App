@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="370dp"
+    android:clipChildren="true"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:background="@drawable/round_layout"
+    android:layout_height="fill_parent"
+    android:backgroundTint="#4CAF50">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:textSize="20dp"
+        android:textAlignment="center"
+        android:id="@+id/trade_dialogue"
+        android:text="Congratulations!"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"></TextView>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/trade_dialogue"
+        android:id="@+id/line1"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="150dp"
+            android:textAlignment="center"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:textSize="10dp"
+            android:id="@+id/trade_details"
+            android:textColor="#FFFFFF"
+            android:textStyle="italic"></TextView>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="40dp"
+        android:layout_below="@+id/line1">
+
+        <Button
+            android:layout_width="300dp"
+            android:layout_height="35dp"
+            android:backgroundTint="@color/white"
+            android:text="DONE"
+            android:textSize="10sp"
+            android:background="@drawable/rounded_b"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:id="@+id/done"
+            android:textColor="#4CAF50"></Button>
+
+
+    </LinearLayout>
+
+</RelativeLayout>
